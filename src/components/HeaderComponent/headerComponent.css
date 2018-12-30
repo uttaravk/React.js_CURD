@@ -1,0 +1,21 @@
+#main_screen {
+  align: center;
+  /* background-color: yellow; */
+}
+
+#title {
+  color: white;
+  background-color: #19334d;
+  font-size: 50px;
+  min-height: 70px;
+  margin-top: 4%;
+  margin-bottom: -1%;
+  padding-bottom: 3%;
+  padding-top: 3%;
+}
+
+.jumbotron {
+  background-color: white;
+  /* margin: -10%; */
+  margin-top: -5%;
+}

@@ -1,0 +1,133 @@
+#user {
+  font-size: 30px;
+  float: left;
+}
+
+#logout {
+  margin-top: -3px;
+  margin-left: 20%;
+}
+
+#main {
+  margin-left: 35%;
+  margin-top: 5%;
+}
+
+#finder {
+  margin-top: 7%;
+  font-size: 150%;
+  margin-left: -7%;
+  border-style: solid;
+  border-color: grey;
+  border-width: thin;
+  width: 60%;
+  padding-left: 3%;
+  padding-bottom: 3%;
+  padding-top: 3%;
+  padding-right: -10%;
+  margin-right: -40%;
+}
+
+#find {
+  width: 15%;
+  height: 5%;
+  padding: 1%;
+  margin-left: 2%;
+  font-size: 75%;
+}
+
+#createemp {
+  margin-top: 3%;
+  font-size: 130%;
+  margin-left: -7%;
+}
+
+#empnamefirst {
+  padding: 0.5%;
+  margin-right: 1%;
+  font-size: 20px;
+}
+
+#empnamelast {
+  padding: 0.5%;
+  font-size: 20px;
+}
+
+::-webkit-input-placeholder {
+  font-style: italic;
+  font-size: 15px;
+}
+
+:-moz-placeholder {
+  font-style: italic;
+  font-size: 15px;
+}
+
+::-moz-placeholder {
+  font-style: italic;
+  font-size: 15px;
+}
+
+:-ms-input-placeholder {
+  font-style: italic;
+  font-size: 15px;
+}
+
+#hobbies {
+  margin-top: 3%;
+  font-size: 130%;
+}
+
+#addr_table {
+  border-style: none;
+  margin: 1%;
+  font-size: 115%;
+  margin-left: 5%;
+}
+
+#hobbies {
+  width: 75%;
+  font-size: 130%;
+  border-style: solid;
+  border-color: grey;
+  border-width: thin;
+  width: 40%;
+  padding: 3%;
+}
+
+#add {
+  margin-left: 50%;
+  width: 25%;
+}
+
+#hobby_checkbox {
+  margin-left: 7%;
+  margin-top: 3%;
+  font-size: 90%;
+  margin-bottom: 5%;
+}
+
+#edit {
+  margin-left: 20%;
+  width: 30%;
+  margin-right: 5%;
+}
+
+#delemp {
+  font-size: 110%;
+  margin-top: 5%;
+  margin-right: 5%;
+  margin-bottom: 10%;
+}
+
+#saveemp {
+  font-size: 120%;
+  margin-bottom: 10%;
+  margin-top: 5%;
+}
+
+#msg {
+  margin-top: 3%;
+  color: #ef9228;
+  font-size: 30px;
+}
