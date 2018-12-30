@@ -99,8 +99,6 @@ saveEmployee(){
   var addcountry=document.getElementById('country').value;
   var addzip=document.getElementById('zip').value;
   // var addHobbies=document.getElementsByClassName('checkbox')
-
-console.log(addHobbies)
   var json = '{"firstName":"'+addfirstname+'","lastName":"'+addlastname+'","address":{"street":"'+addstreet+'","city":"'+addcity+'","state":"'+addstate+'","country":"'+addcountry+'","zip":'+addzip+'}}';
   console.log(json)
   var empdata = JSON.parse(json);
