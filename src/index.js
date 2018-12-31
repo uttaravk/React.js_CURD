@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Header from './components/HeaderComponent/headerComponent';
-import Login from './components/LoginComponent/loginComponent';
+import Header from './components/HeaderComponent/HeaderComponent';
+import Login from './components/LoginComponent/LoginComponent';
 
 import * as serviceWorker from './serviceWorker';
 

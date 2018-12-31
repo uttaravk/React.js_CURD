@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './empComponent.css';
+import './EmpComponent.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Login from '../LoginComponent/loginComponent';
+import Login from '../LoginComponent/LoginComponent';
+import Hobbies from '../HobbiesComponent/HobbiesComponent';
 import {render} from 'react-dom';
 import axios from "axios";
 
@@ -9,7 +10,23 @@ import axios from "axios";
 class Employee extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: "" };
+    this.state={
+      "hobbycount":3,
+      user: {
+          firstname: "",
+          lastname: "",
+          state: "",
+          city: "",
+          street: "",
+          zip: 0,
+          country: "",
+        }
+     };
+}
+
+componentDidMount()
+{
+  this.setState({"hobbycount":3, "name":" "});
 }
 
   handleLogout()
@@ -17,7 +34,16 @@ class Employee extends Component {
     sessionStorage.clear();
     render(<Login/>, document.getElementById('app_content'));
   }
-  retrieveEmployeeData() {
+
+  findEmployee = event => {
+      let response=this.retrieveEmployeeData();
+        this.setState({
+          firstname: response.firstName,
+          lastname: response.lastName,
+         });
+     }
+
+  retrieveEmployeeData(){
       var message="";
       var reqid = (document.getElementById('empid')).value;
       var url='http://104.248.219.208:8080/cts/employee?empId='+reqid;
@@ -31,6 +57,7 @@ class Employee extends Component {
                       message="User Found!";
                       console.log(message)
                       document.getElementById('msg').innerHTML=message;
+                      return response.data;
           }
           else {
             message="User not found. Create a new user.";
@@ -42,10 +69,12 @@ class Employee extends Component {
         })
         .catch(function(error) {
           console.log(error);
-          var message="User Not Found. Create a New User.";
+          var message="Error in Search Operation!";
           console.log(message)
           document.getElementById('msg').innerHTML=message;
         });
+        return null;
+
 }
 
 deleteEmployee(){
@@ -64,7 +93,7 @@ deleteEmployee(){
                     axios
                       .delete(urldel)
                       .then(function(response) {
-                        if (response.status==200)
+                        if (response.status===200)
                         {
                           message="User Deleted Successfully!";
                           console.log(message)
@@ -108,7 +137,7 @@ saveEmployee(){
   axios
     .post(url, empdata)
     .then(function(response) {
-      if (response.status=200)
+      if (response.status===200)
       {
                   console.log(response.data.firstName);
                   message="New User Created";
@@ -130,17 +159,44 @@ saveEmployee(){
       document.getElementById('msg').innerHTML=message;
     });
 }
+handleClickAdd = event => {
+      this.setState({ hobbycount: this.state.hobbycount+1 });
+   }
+
+
+
+ handleChange(propertyName, event) {
+       const user = this.state.user;
+       user[propertyName] = event.target.value;
+       this.setState({ user: user });
+     }
+
+handleClickDelete = event => {
+  let divId="";
+  let checkboxes = document.getElementsByName("hobby");
+  for (var i=0; i<checkboxes.length; i++) {
+    if (checkboxes[i].checked) {
+      divId="div"+checkboxes[i].id;
+      document.getElementById(divId).innerHTML="";
+    }
+  }
+}
+
+handleClickEdit = event => {
+      this.setState({ hobbycount: this.state.hobbycount+1 });
+   }
+
   render() {
     return (
       <div id="main">
       <div id="user">Hi, {window.sessionStorage.getItem('loggedEmp')}</div>
       <button type="button" id="logout" className="btn btn-danger" onClick={this.handleLogout}>Logout</button>
       <div id="finder">Employee ID: <input type="text" id="empid"/>
-      <button type="button" id="find" className="btn btn-primary" onClick={this.retrieveEmployeeData}>Find</button>
+      <button type="button" id="find" className="btn btn-primary" onClick={this.findEmployee.bind(this)}>Find</button>
       </div>
       <div id="msg"></div>
       <div id="msg"></div>
-      <div id="createemp">Employee Name: <input type="text" id="empnamefirst" placeholder="first name"/><input type="text" id="empnamelast" placeholder="last name"/><br/><br/>
+      <div id="createemp">Employee Name: <input type="text" id="empnamefirst" placeholder="first name" onChange={this.handleChange.bind(this, "firstname")}/><input type="text" id="empnamelast" placeholder="last name" onChange={this.handleChange.bind(this, "lastname")}/><br/><br/>
       Address:<br/>
       </div>
       <div id="address">
@@ -149,40 +205,37 @@ saveEmployee(){
       <tr>
       <td>Street</td>
       <td>:</td>
-      <td><input type="text" id="street"/></td>
+      <td><input type="text" id="street" onChange={this.handleChange.bind(this, "street")}/></td>
       </tr>
       <tr>
       <td>City</td>
       <td>:</td>
-      <td><input type="text" id="city"/></td>
+      <td><input type="text" id="city" onChange={this.handleChange.bind(this, "city")}/></td>
       </tr>
       <tr>
       <td>State</td>
       <td>:</td>
-      <td><input type="text" id="state"/></td>
+      <td><input type="text" id="state" onChange={this.handleChange.bind(this, "state")}/></td>
       </tr>
       <tr>
       <td>Country</td>
       <td>:</td>
-      <td><input type="text" id="country"/></td>
+      <td><input type="text" id="country" onChange={this.handleChange.bind(this, "country")}/></td>
       </tr>
       <tr>
       <td>Zip</td>
       <td>:</td>
-      <td><input type="text" id="zip"/></td>
+      <td><input type="text" id="zip" onChange={this.handleChange.bind(this, "zip")}/></td>
       </tr>
       </tbody>
       </table>
       </div>
       <div id="hobbies">
     Hobbies
-    <button type="button" id="add" className="btn btn-success" >Add</button>
-    <div id="hobby_checkbox">
-    <input type="checkbox" name="hobby1" value="hobby1" className="checkbox"/> Hobby 1<br/>
-    <input type="checkbox" name="hobby2" value="hobby2" className="checkbox"/> Hobby 2<br/>
-    <input type="checkbox" name="hobby3" value="hobby3" className="checkbox"/> Hobby 3<br/>
-    </div>
-    <div><button type="button" id="edit" className="btn btn-warning" >Edit</button><button type="button" id="del" className="btn btn-danger" >Delete</button></div>
+    <button type="button" id="add" className="btn btn-success" onClick={this.handleClickAdd.bind(this)}>Add</button>
+    <div id="hobby_checkbox"><Hobbies count={this.state.hobbycount} /></div>
+    <div><button type="button" id="edit" className="btn btn-warning" onClick={this.handleClickEdit.bind(this)}>Edit</button>
+    <button type="button" id="del" className="btn btn-danger" onClick={this.handleClickDelete.bind(this)}>Delete</button></div>
       </div>
     <div>
       <button type="button" id="delemp" className="btn btn-danger" onClick={this.deleteEmployee}>Delete Employee</button>

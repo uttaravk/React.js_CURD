@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import './loginComponent.css';
+import './LoginComponent.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {render} from 'react-dom';
-import Employee from '../EmpComponent/empComponent';
+import Employee from '../EmpComponent/EmpComponent';
 
 
 class Login extends Component {
