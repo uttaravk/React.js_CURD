@@ -13,6 +13,10 @@
   margin-top: 5%;
 }
 
+#instr {
+  font-size: 15px;
+}
+
 #finder {
   margin-top: 7%;
   font-size: 150%;
@@ -144,4 +148,45 @@
 #hobbyLabel {
   border-style: solid;
   border-color: orange;
+}
+
+#tooltip {
+  position: relative;
+  display: inline-block;
+  font-family: Arial;
+  font-size: 25px;
+  color: black
+}
+
+#tooltiptext {
+  visibility: hidden;
+  width: 75%;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 100%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#tooltip #tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  border-width: 5px;
+  border-style: solid;
+  margin-left: -100px;
+  border-color: #555 transparent transparent transparent;
+}
+
+#tooltip:hover #tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }

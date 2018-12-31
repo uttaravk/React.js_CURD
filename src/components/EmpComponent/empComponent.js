@@ -24,6 +24,8 @@ class Employee extends Component {
      };
 }
 
+
+
 componentDidMount()
 {
   this.setState({"hobbycount":3, "name":" "});
@@ -121,6 +123,33 @@ deleteEmployee(){
       });
 }
 saveEmployee(){
+
+  function validate(addfirstname, addlastname, addstreet, addcity, addstate, addcountry, addzip)
+  {
+    let zippattern="^[0-9]{5}$";
+    let namepattern = "^[a-zA-Z]+$";
+    let flag=0;
+    if (addfirstname===null ||  addfirstname==="" || addfirstname.match(namepattern)==null)
+    {
+      alert("Please Enter Valid First-Name");
+      flag=1;
+    }
+    if (addlastname===null ||  addlastname==="" || addlastname.match(namepattern)==null)
+    {
+      alert("Please Enter Valid Last-Name");
+      flag=1;
+    }
+    if (addzip===null ||  addzip==="" || addzip.match(zippattern)==null)
+    {
+      alert("Please Enter Valid Zip Code");
+      flag=1;
+    }
+    if (flag===0){
+      return true;
+    }
+      return false;
+  }
+
   let addfirstname=document.getElementById('empnamefirst').value;
   let addlastname=document.getElementById('empnamelast').value;
   let addstreet=document.getElementById('street').value;
@@ -128,51 +157,60 @@ saveEmployee(){
   let addstate=document.getElementById('state').value;
   let addcountry=document.getElementById('country').value;
   let addzip=document.getElementById('zip').value;
-
-  let labelId="";
-  let hobbies='"hobbies":[';
-  let checkboxes = document.getElementsByName("hobby");
-  for (let i=0; i<checkboxes.length; i++) {
-  if (checkboxes[i].checked) {
-      labelId="lab"+checkboxes[i].id;
-      hobbies+='"';
-      hobbies+=checkboxes[i].value;
-      hobbies+='",';
+  if(validate(addfirstname, addlastname, addstreet, addcity, addstate, addcountry, addzip))
+  {
+    let labelId="";
+    let flag=0;
+    let hobbies='"hobbies":[';
+    let checkboxes = document.getElementsByName("hobby");
+    for (let i=0; i<checkboxes.length; i++) {
+    if (checkboxes[i].checked) {
+        labelId="lab"+checkboxes[i].id;
+        hobbies+='"';
+        hobbies+=checkboxes[i].value;
+        hobbies+='",';
+        flag=1;
+      }
     }
-  }
-hobbies=hobbies.substring(hobbies.length-1, 0);
-hobbies+=']'
-console.log(hobbies);
-  let json = '{"firstName":"'+addfirstname+'","lastName":"'+addlastname+'","address":{"street":"'+addstreet+'","city":"'+addcity+'","state":"'+addstate+'","country":"'+addcountry+'","zip":'+addzip+'}, '+hobbies+'}';
-  console.log(json)
-  let empdata = JSON.parse(json);
-  let message="";
-  let url="http://104.248.219.208:8080/cts/employee";
-  console.log(url);
-  axios
-    .post(url, empdata)
-    .then(function(response) {
-      if (response.status===200)
-      {
-                  console.log(response.data.firstName);
-                  message="Message: New User Created";
-                  console.log(message)
-                  document.getElementById('msg').innerHTML=message;
-      }
-      else {
-        message="Message: Creation Failed";
-        console.log(message)
-        document.getElementById('msg').innerHTML=message;
-      }
+    if(flag===1){
+      hobbies=hobbies.substring(hobbies.length-1, 0);
+    }
+  hobbies+=']'
+  console.log(hobbies);
+    let json = '{"firstName":"'+addfirstname+'","lastName":"'+addlastname+'","address":{"street":"'+addstreet+'","city":"'+addcity+'","state":"'+addstate+'","country":"'+addcountry+'","zip":'+addzip+'}, '+hobbies+'}';
+    console.log(json)
+    let empdata = JSON.parse(json);
+    let message="";
+    let url="http://104.248.219.208:8080/cts/employee";
+    console.log(url);
+    axios
+      .post(url, empdata)
+      .then(function(response) {
+        if (response.status===200)
+        {
+                    console.log(response.data.firstName);
+                    message="Message: New User Created";
+                    console.log(message)
+                    document.getElementById('msg').innerHTML=message;
+        }
+        else {
+          message="Message: Creation Failed";
+          console.log(message)
+          document.getElementById('msg').innerHTML=message;
+        }
 
-      console.log(response.data);
-    })
-    .catch(function(error) {
-      console.log(error);
-      let message="Message: Creation Failed";
-      console.log(message)
-      document.getElementById('msg').innerHTML=message;
-    });
+        console.log(response.data);
+      })
+      .catch(function(error) {
+        let message="Message: Creation Failed";
+        document.getElementById('msg').innerHTML=message;
+      });
+  }
+  else {
+    let message="Message: Incorrect User Data. Please Update";
+    document.getElementById('msg').innerHTML=message;
+  }
+
 }
 handleClickAdd = event => {
       this.setState({ hobbycount: this.state.hobbycount+1 });
@@ -202,7 +240,6 @@ handleClickEdit = event => {
   let checkboxes = document.getElementsByName("hobby");
   for (let i=0; i<checkboxes.length; i++) {
     let labelId="lab"+checkboxes[i].id;
-    let editsave="edit"+checkboxes[i].id;
     let val=checkboxes[i].id;
     if (checkboxes[i].checked) {
       let hobbybox='<input type="text" class="hobbyLabel" id='+labelId+' placeholder="'+val+'" />';
@@ -224,7 +261,7 @@ handleClickEdit = event => {
       <button type="button" id="find" className="btn btn-primary" onClick={this.retrieveEmployeeData}>Find</button>
       <div id="search_results"></div>
       </div>
-      <div id="createemp">Employee Name: <input type="text" id="empnamefirst" placeholder="first name" onChange={this.handleChange.bind(this, "firstname")}/><input type="text" id="empnamelast" placeholder="last name" onChange={this.handleChange.bind(this, "lastname")}/><br/><br/>
+      <div id="createemp">Employee Name<sup>*</sup>: <input type="text" id="empnamefirst" placeholder="first name" onChange={this.handleChange.bind(this, "firstname")}/><input type="text" id="empnamelast" placeholder="last name" onChange={this.handleChange.bind(this, "lastname")}/><br/><br/>
       Address:<br/>
       </div>
       <div id="address">
@@ -251,9 +288,14 @@ handleClickEdit = event => {
       <td><input type="text" id="country" onChange={this.handleChange.bind(this, "country")}/></td>
       </tr>
       <tr>
-      <td>Zip</td>
+      <td id="zipcode">Zip<sup>*</sup></td>
       <td>:</td>
-      <td><input type="text" id="zip" onChange={this.handleChange.bind(this, "zip")}/></td>
+      <td><label id="tooltip"><input type="text" id="zip" onChange={this.handleChange.bind(this, "zip")}/>
+      <span id="tooltiptext">
+        <h4 id="instr">5 Digit Valid Zip Codes are Allowed</h4>
+      </span>
+      </label>
+      </td>
       </tr>
       </tbody>
       </table>
