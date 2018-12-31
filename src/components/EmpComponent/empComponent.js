@@ -37,9 +37,9 @@ componentDidMount()
 
 
   retrieveEmployeeData(){
-      var message="";
-      var reqid = (document.getElementById('empid')).value;
-      var url='http://104.248.219.208:8080/cts/employee?empId='+reqid;
+      let message="";
+      let reqid = (document.getElementById('empid')).value;
+      let url='http://104.248.219.208:8080/cts/employee?empId='+reqid;
       console.log(url);
       axios
         .get(url)
@@ -72,16 +72,16 @@ componentDidMount()
         })
         .catch(function(error) {
           console.log(error);
-          var message="Message: Error in Search Operation!";
+          let message="Message: Error in Search Operation!";
           console.log(message)
           document.getElementById('msg').innerHTML=message;
         });
 }
 
 deleteEmployee(){
-    var message="";
-    var reqid = (document.getElementById('empid')).value;
-    var url='http://104.248.219.208:8080/cts/employee?empId='+reqid;
+    let message="";
+    let reqid = (document.getElementById('empid')).value;
+    let url='http://104.248.219.208:8080/cts/employee?empId='+reqid;
     console.log(url);
     axios
       .get(url)
@@ -90,7 +90,7 @@ deleteEmployee(){
         {
                     console.log(response.data.firstName);
 
-                    var urldel="http://104.248.219.208:8080/cts/employee?empId="+reqid;
+                    let urldel="http://104.248.219.208:8080/cts/employee?empId="+reqid;
                     axios
                       .delete(urldel)
                       .then(function(response) {
@@ -115,25 +115,39 @@ deleteEmployee(){
       })
       .catch(function(error) {
         console.log(error);
-        var message="Message: User Not Found. Create a New User.";
+        let message="Message: User Not Found. Create a New User.";
         console.log(message)
         document.getElementById('msg').innerHTML=message;
       });
 }
 saveEmployee(){
-  var addfirstname=document.getElementById('empnamefirst').value;
-  var addlastname=document.getElementById('empnamelast').value;
-  var addstreet=document.getElementById('street').value;
-  var addcity=document.getElementById('city').value;
-  var addstate=document.getElementById('state').value;
-  var addcountry=document.getElementById('country').value;
-  var addzip=document.getElementById('zip').value;
-  // var addHobbies=document.getElementsByClassName('checkbox')
-  var json = '{"firstName":"'+addfirstname+'","lastName":"'+addlastname+'","address":{"street":"'+addstreet+'","city":"'+addcity+'","state":"'+addstate+'","country":"'+addcountry+'","zip":'+addzip+'}}';
+  let addfirstname=document.getElementById('empnamefirst').value;
+  let addlastname=document.getElementById('empnamelast').value;
+  let addstreet=document.getElementById('street').value;
+  let addcity=document.getElementById('city').value;
+  let addstate=document.getElementById('state').value;
+  let addcountry=document.getElementById('country').value;
+  let addzip=document.getElementById('zip').value;
+
+  let labelId="";
+  let hobbies='"hobbies":[';
+  let checkboxes = document.getElementsByName("hobby");
+  for (let i=0; i<checkboxes.length; i++) {
+  if (checkboxes[i].checked) {
+      labelId="lab"+checkboxes[i].id;
+      hobbies+='"';
+      hobbies+=checkboxes[i].value;
+      hobbies+='",';
+    }
+  }
+hobbies=hobbies.substring(hobbies.length-1, 0);
+hobbies+=']'
+console.log(hobbies);
+  let json = '{"firstName":"'+addfirstname+'","lastName":"'+addlastname+'","address":{"street":"'+addstreet+'","city":"'+addcity+'","state":"'+addstate+'","country":"'+addcountry+'","zip":'+addzip+'}, '+hobbies+'}';
   console.log(json)
-  var empdata = JSON.parse(json);
-  var message="";
-  var url="http://104.248.219.208:8080/cts/employee";
+  let empdata = JSON.parse(json);
+  let message="";
+  let url="http://104.248.219.208:8080/cts/employee";
   console.log(url);
   axios
     .post(url, empdata)
@@ -155,7 +169,7 @@ saveEmployee(){
     })
     .catch(function(error) {
       console.log(error);
-      var message="Message: Creation Failed";
+      let message="Message: Creation Failed";
       console.log(message)
       document.getElementById('msg').innerHTML=message;
     });
@@ -175,7 +189,7 @@ handleClickAdd = event => {
 handleClickDelete = event => {
   let divId="";
   let checkboxes = document.getElementsByName("hobby");
-  for (var i=0; i<checkboxes.length; i++) {
+  for (let i=0; i<checkboxes.length; i++) {
     if (checkboxes[i].checked) {
       divId="div"+checkboxes[i].id;
       document.getElementById(divId).innerHTML="";
@@ -186,13 +200,10 @@ handleClickDelete = event => {
 
 handleClickEdit = event => {
   let checkboxes = document.getElementsByName("hobby");
-  for (var i=0; i<checkboxes.length; i++) {
+  for (let i=0; i<checkboxes.length; i++) {
     let labelId="lab"+checkboxes[i].id;
     let editsave="edit"+checkboxes[i].id;
     let val=checkboxes[i].id;
-    console.log(val)
-    let valStr=JSON.stringify(val);
-    console.log(valStr)
     if (checkboxes[i].checked) {
       let hobbybox='<input type="text" class="hobbyLabel" id='+labelId+' placeholder="'+val+'" />';
       document.getElementById(labelId).innerHTML=hobbybox;

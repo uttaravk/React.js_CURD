@@ -12,7 +12,7 @@ class Hobbies extends Component
     let val="";
     let divId="";
     let labelId="";
-    for (var i = 0; i < parseInt(this.props.count, 10); i++)
+    for (let i = 0; i < parseInt(this.props.count, 10); i++)
     {
         counter=i+1
         val="Hobby"+counter;

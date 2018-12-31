@@ -8,16 +8,16 @@ import Employee from '../EmpComponent/EmpComponent';
 class Login extends Component {
   LoggedIn()
   {
-    var flag=0;
-    var empname = (document.getElementById('username')).value;
-    var namepattern = "^[a-zA-Z0-9]+$";
+    let flag=0;
+    let empname = (document.getElementById('username')).value;
+    let namepattern = "^[a-zA-Z0-9]+$";
     if (empname===null || empname==="" || empname.match(namepattern)==null)
     {
       alert("Please Enter Valid Username");
       flag=1;
     }
-    var emppswd = (document.getElementById('pswd')).value;
-    var pswdpattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
+    let emppswd = (document.getElementById('pswd')).value;
+    let pswdpattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
     if (emppswd===null || emppswd==="" || emppswd.match(pswdpattern)==null)
     {
       alert("Please Enter Valid Password");
