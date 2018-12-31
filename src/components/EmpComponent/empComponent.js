@@ -183,16 +183,19 @@ handleClickDelete = event => {
   }
 }
 
+
 handleClickEdit = event => {
   let checkboxes = document.getElementsByName("hobby");
   for (var i=0; i<checkboxes.length; i++) {
     let labelId="lab"+checkboxes[i].id;
+    let editsave="edit"+checkboxes[i].id;
     let val=checkboxes[i].id;
     console.log(val)
     let valStr=JSON.stringify(val);
     console.log(valStr)
     if (checkboxes[i].checked) {
-      document.getElementById(labelId).innerHTML='<input type="text" class="hobbyLabel" id='+labelId+' placeholder="'+val+'" />';
+      let hobbybox='<input type="text" class="hobbyLabel" id='+labelId+' placeholder="'+val+'" />';
+      document.getElementById(labelId).innerHTML=hobbybox;
     }
     else {
         document.getElementById(labelId).innerHTML='<label id='+labelId+'>'+val+'</label>';
