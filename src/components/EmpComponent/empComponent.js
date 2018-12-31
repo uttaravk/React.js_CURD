@@ -35,13 +35,6 @@ componentDidMount()
     render(<Login/>, document.getElementById('app_content'));
   }
 
-  findEmployee = event => {
-      let response=this.retrieveEmployeeData();
-        this.setState({
-          firstname: response.firstName,
-          lastname: response.lastName,
-         });
-     }
 
   retrieveEmployeeData(){
       var message="";
@@ -54,13 +47,23 @@ componentDidMount()
           if (response.data.firstName)
           {
                       console.log(response.data.firstName);
-                      message="User Found!";
+                      message="Message: User Found!";
                       console.log(message)
                       document.getElementById('msg').innerHTML=message;
-                      return response.data;
+                      let empdata='Name: '+response.data.firstName+' '+response.data.lastName+'<br/>';
+                      empdata+='Address: <br/>';
+                      empdata+='<div id="address_contents"> ';
+                      empdata+='Street: '+response.data.address.street+'<br/>';
+                      empdata+='City: '+response.data.address.city+'<br/>';
+                      empdata+='State: '+response.data.address.state+'<br/>';
+                      empdata+='Country: '+response.data.address.country+'<br/>';
+                      empdata+='</div>';
+                      empdata+='Hobbies: ';
+                      empdata+=response.data.hobbies;
+                      document.getElementById('search_results').innerHTML=empdata;
           }
           else {
-            message="User not found. Create a new user.";
+            message="Message: User not found. Create a new user.";
             console.log(message)
             document.getElementById('msg').innerHTML=message;
           }
@@ -69,12 +72,10 @@ componentDidMount()
         })
         .catch(function(error) {
           console.log(error);
-          var message="Error in Search Operation!";
+          var message="Message: Error in Search Operation!";
           console.log(message)
           document.getElementById('msg').innerHTML=message;
         });
-        return null;
-
 }
 
 deleteEmployee(){
@@ -95,18 +96,18 @@ deleteEmployee(){
                       .then(function(response) {
                         if (response.status===200)
                         {
-                          message="User Deleted Successfully!";
+                          message="Message: User Deleted Successfully!";
                           console.log(message)
                         }
                         else {
-                          message="Deletion Failed";
+                          message="Message: Deletion Failed";
                           console.log(response)
                         }
                         document.getElementById('msg').innerHTML=message;
                       })
         }
         else {
-          message="User not found. Cannot delete the records!";
+          message="Message: User not found. Cannot delete the records!";
           console.log(message)
           document.getElementById('msg').innerHTML=message;
         }
@@ -114,7 +115,7 @@ deleteEmployee(){
       })
       .catch(function(error) {
         console.log(error);
-        var message="User Not Found. Create a New User.";
+        var message="Message: User Not Found. Create a New User.";
         console.log(message)
         document.getElementById('msg').innerHTML=message;
       });
@@ -140,12 +141,12 @@ saveEmployee(){
       if (response.status===200)
       {
                   console.log(response.data.firstName);
-                  message="New User Created";
+                  message="Message: New User Created";
                   console.log(message)
                   document.getElementById('msg').innerHTML=message;
       }
       else {
-        message="Creation Failed";
+        message="Message: Creation Failed";
         console.log(message)
         document.getElementById('msg').innerHTML=message;
       }
@@ -154,7 +155,7 @@ saveEmployee(){
     })
     .catch(function(error) {
       console.log(error);
-      var message="Creation Failed";
+      var message="Message: Creation Failed";
       console.log(message)
       document.getElementById('msg').innerHTML=message;
     });
@@ -183,7 +184,20 @@ handleClickDelete = event => {
 }
 
 handleClickEdit = event => {
-      this.setState({ hobbycount: this.state.hobbycount+1 });
+  let checkboxes = document.getElementsByName("hobby");
+  for (var i=0; i<checkboxes.length; i++) {
+    let labelId="lab"+checkboxes[i].id;
+    let val=checkboxes[i].id;
+    console.log(val)
+    let valStr=JSON.stringify(val);
+    console.log(valStr)
+    if (checkboxes[i].checked) {
+      document.getElementById(labelId).innerHTML='<input type="text" class="hobbyLabel" id='+labelId+' placeholder="'+val+'" />';
+    }
+    else {
+        document.getElementById(labelId).innerHTML='<label id='+labelId+'>'+val+'</label>';
+    }
+  }
    }
 
   render() {
@@ -191,11 +205,11 @@ handleClickEdit = event => {
       <div id="main">
       <div id="user">Hi, {window.sessionStorage.getItem('loggedEmp')}</div>
       <button type="button" id="logout" className="btn btn-danger" onClick={this.handleLogout}>Logout</button>
+      <div id="msg"></div>
       <div id="finder">Employee ID: <input type="text" id="empid"/>
-      <button type="button" id="find" className="btn btn-primary" onClick={this.findEmployee.bind(this)}>Find</button>
+      <button type="button" id="find" className="btn btn-primary" onClick={this.retrieveEmployeeData}>Find</button>
+      <div id="search_results"></div>
       </div>
-      <div id="msg"></div>
-      <div id="msg"></div>
       <div id="createemp">Employee Name: <input type="text" id="empnamefirst" placeholder="first name" onChange={this.handleChange.bind(this, "firstname")}/><input type="text" id="empnamelast" placeholder="last name" onChange={this.handleChange.bind(this, "lastname")}/><br/><br/>
       Address:<br/>
       </div>

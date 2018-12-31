@@ -11,12 +11,14 @@ class Hobbies extends Component
     let counter=0;
     let val="";
     let divId="";
+    let labelId="";
     for (var i = 0; i < parseInt(this.props.count, 10); i++)
     {
         counter=i+1
         val="Hobby"+counter;
         divId="div"+val;
-        checkboxes.push([<div id={divId}><input type="checkbox" id={val} name={"hobby"} value={val}/><label for={val}>{val}</label><br/></div>]);
+        labelId="lab"+val;
+        checkboxes.push([<div id={divId}><input type="checkbox" id={val} name={"hobby"} value={val}/><label id={labelId}>{val}</label><br/></div>]);
     }
     return (checkboxes);
   }
