@@ -42,15 +42,12 @@ componentDidMount()
       let message="";
       let reqid = (document.getElementById('empid')).value;
       let url='http://104.248.219.208:8080/cts/employee?empId='+reqid;
-      console.log(url);
       axios
         .get(url)
         .then(function(response) {
           if (response.data.firstName)
           {
-                      console.log(response.data.firstName);
                       message="Message: User Found!";
-                      console.log(message)
                       document.getElementById('msg').innerHTML=message;
                       let empdata='Name: '+response.data.firstName+' '+response.data.lastName+'<br/>';
                       empdata+='Address: <br/>';
@@ -66,16 +63,12 @@ componentDidMount()
           }
           else {
             message="Message: User not found. Create a new user.";
-            console.log(message)
             document.getElementById('msg').innerHTML=message;
           }
 
-          console.log(response.data);
         })
         .catch(function(error) {
-          console.log(error);
           let message="Message: Error in Search Operation!";
-          console.log(message)
           document.getElementById('msg').innerHTML=message;
         });
 }
@@ -84,13 +77,11 @@ deleteEmployee(){
     let message="";
     let reqid = (document.getElementById('empid')).value;
     let url='http://104.248.219.208:8080/cts/employee?empId='+reqid;
-    console.log(url);
     axios
       .get(url)
       .then(function(response) {
         if (response.data.firstName)
         {
-                    console.log(response.data.firstName);
 
                     let urldel="http://104.248.219.208:8080/cts/employee?empId="+reqid;
                     axios
@@ -99,26 +90,24 @@ deleteEmployee(){
                         if (response.status===200)
                         {
                           message="Message: User Deleted Successfully!";
-                          console.log(message)
                         }
                         else {
                           message="Message: Deletion Failed";
-                          console.log(response)
                         }
                         document.getElementById('msg').innerHTML=message;
                       })
         }
         else {
           message="Message: User not found. Cannot delete the records!";
-          console.log(message)
+
           document.getElementById('msg').innerHTML=message;
         }
-        console.log(response.data);
+
       })
       .catch(function(error) {
-        console.log(error);
+
         let message="Message: User Not Found. Create a New User.";
-        console.log(message)
+
         document.getElementById('msg').innerHTML=message;
       });
 }
@@ -150,6 +139,13 @@ saveEmployee(){
       return false;
   }
 
+  function handleChangeLabel(box){
+    let labelId="lab"+box.id+"2";
+    if(document.getElementById(labelId)){
+      box.value=document.getElementById(labelId).value;
+    }
+  }
+
   let addfirstname=document.getElementById('empnamefirst').value;
   let addlastname=document.getElementById('empnamelast').value;
   let addstreet=document.getElementById('street').value;
@@ -159,13 +155,17 @@ saveEmployee(){
   let addzip=document.getElementById('zip').value;
   if(validate(addfirstname, addlastname, addstreet, addcity, addstate, addcountry, addzip))
   {
-    let labelId="";
+
+
     let flag=0;
     let hobbies='"hobbies":[';
+
     let checkboxes = document.getElementsByName("hobby");
     for (let i=0; i<checkboxes.length; i++) {
+        let labelId="lab"+checkboxes[i].id;
+        let box=checkboxes[i];
+        handleChangeLabel(box);
     if (checkboxes[i].checked) {
-        labelId="lab"+checkboxes[i].id;
         hobbies+='"';
         hobbies+=checkboxes[i].value;
         hobbies+='",';
@@ -176,30 +176,27 @@ saveEmployee(){
       hobbies=hobbies.substring(hobbies.length-1, 0);
     }
   hobbies+=']'
-  console.log(hobbies);
     let json = '{"firstName":"'+addfirstname+'","lastName":"'+addlastname+'","address":{"street":"'+addstreet+'","city":"'+addcity+'","state":"'+addstate+'","country":"'+addcountry+'","zip":'+addzip+'}, '+hobbies+'}';
-    console.log(json)
     let empdata = JSON.parse(json);
     let message="";
     let url="http://104.248.219.208:8080/cts/employee";
-    console.log(url);
     axios
       .post(url, empdata)
       .then(function(response) {
         if (response.status===200)
         {
-                    console.log(response.data.firstName);
+
                     message="Message: New User Created";
-                    console.log(message)
+
                     document.getElementById('msg').innerHTML=message;
         }
         else {
           message="Message: Creation Failed";
-          console.log(message)
+
           document.getElementById('msg').innerHTML=message;
         }
 
-        console.log(response.data);
+
       })
       .catch(function(error) {
         let message="Message: Creation Failed";
@@ -242,7 +239,8 @@ handleClickEdit = event => {
     let labelId="lab"+checkboxes[i].id;
     let val=checkboxes[i].id;
     if (checkboxes[i].checked) {
-      let hobbybox='<input type="text" class="hobbyLabel" id='+labelId+' placeholder="'+val+'" />';
+      // let box=checkboxes[i];
+      let hobbybox='<input type="text" class="hobbyLabel" id='+labelId+'2 placeholder="'+val+'" />';
       document.getElementById(labelId).innerHTML=hobbybox;
     }
     else {
