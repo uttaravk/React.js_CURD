@@ -17,6 +17,14 @@
   font-size: 15px;
 }
 
+#note {
+  font-size: 15px;
+  color: grey;
+  margin-top: 2%;
+  margin-left: 15%;
+  margin-bottom: -3%;
+}
+
 #finder {
   margin-top: 7%;
   font-size: 150%;

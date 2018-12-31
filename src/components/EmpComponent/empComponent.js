@@ -116,7 +116,7 @@ saveEmployee(){
   function validate(addfirstname, addlastname, addstreet, addcity, addstate, addcountry, addzip)
   {
     let zippattern="^[0-9]{5}$";
-    let namepattern = "^[a-zA-Z]+$";
+    let namepattern = "^[a-zA-Z' ']+$";
     let flag=0;
     if (addfirstname===null ||  addfirstname==="" || addfirstname.match(namepattern)==null)
     {
@@ -187,8 +187,17 @@ saveEmployee(){
         {
 
                     message="Message: New User Created";
-
                     document.getElementById('msg').innerHTML=message;
+                    let elements = document.getElementsByTagName("input");
+                    for (let i=0; i < elements.length; i++) {
+                      if (elements[i].type == "text") {
+                        elements[i].value = "";
+                      }
+                      else if(elements[i].type == "checkbox")
+                      {
+                        elements[i].checked=false;
+                      }
+                    }
         }
         else {
           message="Message: Creation Failed";
@@ -299,15 +308,19 @@ handleClickEdit = event => {
       </table>
       </div>
       <div id="hobbies">
-    Hobbies
-    <button type="button" id="add" className="btn btn-success" onClick={this.handleClickAdd.bind(this)}>Add</button>
-    <div id="hobby_checkbox"><Hobbies count={this.state.hobbycount} /></div>
-    <div><button type="button" id="edit" className="btn btn-warning" onClick={this.handleClickEdit.bind(this)}>Edit</button>
-    <button type="button" id="del" className="btn btn-danger" onClick={this.handleClickDelete.bind(this)}>Delete</button></div>
-      </div>
+        Hobbies
+        <button type="button" id="add" className="btn btn-success" onClick={this.handleClickAdd.bind(this)}>Add</button>
+        <div id="hobby_checkbox"><Hobbies count={this.state.hobbycount} /></div>
+        <div>
+        <button type="button" id="edit" className="btn btn-warning" onClick={this.handleClickEdit.bind(this)}>Edit</button>
+        <button type="button" id="del" className="btn btn-danger" onClick={this.handleClickDelete.bind(this)}>Delete</button>
+        <p id="note">Select a Hobby to Edit or Delete</p>
+        </div>
+    </div>
     <div>
       <button type="button" id="delemp" className="btn btn-danger" onClick={this.deleteEmployee}>Delete Employee</button>
       <button type="button" id="saveemp" className="btn btn-success" onClick={this.saveEmployee}>Save Employee</button>
+
     </div>
       </div>
     );
