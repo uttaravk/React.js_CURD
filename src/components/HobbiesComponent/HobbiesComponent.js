@@ -12,8 +12,7 @@ class Hobbies extends Component
     let val="";
     let divId="";
     let labelId="";
-    for (let i = 0; i < parseInt(this.props.count, 10); i++)
-    {
+    for (let i = 0; i < parseInt(this.props.count, 10); i++) {
         counter=i+1
         val="Hobby"+counter;
         divId="div"+val;
@@ -22,8 +21,7 @@ class Hobbies extends Component
     }
     return (checkboxes);
   }
-  render()
-  {
+  render() {
     return (this.generateCheckbox());
   }
 }
