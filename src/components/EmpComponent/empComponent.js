@@ -117,6 +117,8 @@ saveEmployee(){
   {
     let zippattern="^[0-9]{5}$";
     let namepattern = "^[a-zA-Z' ']+$";
+    let addresspattern = "^[a-zA-Z' ']*$";
+
     let flag=0;
     if (addfirstname===null ||  addfirstname==="" || addfirstname.match(namepattern)==null)
     {
@@ -126,6 +128,11 @@ saveEmployee(){
     if (addlastname===null ||  addlastname==="" || addlastname.match(namepattern)==null)
     {
       alert("Please Enter Valid Last-Name");
+      flag=1;
+    }
+    if(addcity.match(addresspattern)==null || addstate.match(addresspattern)==null || addcountry.match(addresspattern)==null)
+    {
+      alert("Please Enter Valid Address");
       flag=1;
     }
     if (addzip===null ||  addzip==="" || addzip.match(zippattern)==null)
